@@ -53,27 +53,15 @@ class Products(dict):
         ]
     }
     CODES = {
-        "shorttermgic90days": {
-            "key": ("3504", "90", "CAD"),
-            "name": "90 Day Guaranteed Investment",
-        },
-        "shorttermgic180days": {
-            "key": ("3504", "180", "CAD"),
-            "name": "180 Day Guaranteed Investment",
-        },
-        "shorttermgic270days": {
-            "key": ("3504", "270", "CAD"),
-            "name": "270 Day Guaranteed Investment",
-        },
-        "gic1yr": {"key": ("3500", "1", "CAD"), "name": "1 Year Guaranteed Investment"},
-        "gic18month": {
-            "key": ("3500", "1.5", "CAD"),
-            "name": "1.5 Year Guaranteed Investment",
-        },
-        "gic2yr": {"key": ("3500", "2", "CAD"), "name": "2 Year Guaranteed Investment"},
-        "gic3yr": {"key": ("3500", "3", "CAD"), "name": "3 Year Guaranteed Investment"},
-        "gic4yr": {"key": ("3500", "4", "CAD"), "name": "4 Year Guaranteed Investment"},
-        "gic5yr": {"key": ("3500", "5", "CAD"), "name": "5 Year Guaranteed Investment"},
+        "shorttermgic90days": {"key": ("3504", "90", "CAD"), "name": "90 Day GIC",},
+        "shorttermgic180days": {"key": ("3504", "180", "CAD"), "name": "180 Day GIC",},
+        "shorttermgic270days": {"key": ("3504", "270", "CAD"), "name": "270 Day GIC",},
+        "gic1yr": {"key": ("3500", "1", "CAD"), "name": "1 Year GIC"},
+        "gic18month": {"key": ("3500", "1.5", "CAD"), "name": "1.5 Year GIC",},
+        "gic2yr": {"key": ("3500", "2", "CAD"), "name": "2 Year GIC"},
+        "gic3yr": {"key": ("3500", "3", "CAD"), "name": "3 Year GIC"},
+        "gic4yr": {"key": ("3500", "4", "CAD"), "name": "4 Year GIC"},
+        "gic5yr": {"key": ("3500", "5", "CAD"), "name": "5 Year GIC"},
     }
 
     def __init__(self, *args):
