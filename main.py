@@ -98,16 +98,8 @@ class Products(dict):
 xml = minidom.parse("RatesHistory.xml")
 products = Parser(xml).parse_products()
 
-print(products.for_code("gic1yr"))
-print(products.rate_on_day("gic1yr", datetime.date(2020, 4, 9)))
-print(products.rate_on_day("gic1yr", datetime.date(2020, 4, 2)))
-print(products.has_rate_change_on_day("gic1yr", datetime.date(2020, 4, 2)))
-print(products.has_rate_change_on_day("gic1yr", datetime.date(2020, 4, 1)))
-print(products.has_rate_change_on_day("gic1yr", datetime.date(2020, 4, 1)))
-print("Product change")
-print(products.category_has_rate_change_on_day("GIC", datetime.date(2020, 4, 3)))
-print(products.category_has_rate_change_on_day("GIC", datetime.date(2020, 4, 2)))
-print(products.category_has_rate_change_on_day("GIC", datetime.date(2020, 4, 1)))
-
-print(products.category_details_on_day("GIC", datetime.date(2020, 4, 1)))
-print(products.category_details_on_day("GIC", datetime.date(2020, 4, 2)))
+today = datetime.date(2020, 4, 2)
+if products.category_has_rate_change_on_day("GIC", today):
+    rates = products.category_details_on_day("GIC", today)
+    details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
+    print(f"New rates for GICs!\n\n{details}")
