@@ -1,3 +1,4 @@
+![Run tests](https://github.com/AntoineAugusti/tangerine-rates/workflows/Run%20tests/badge.svg)
 ![Post tweet on new rates](https://github.com/AntoineAugusti/tangerine-rates/workflows/Post%20tweet%20on%20new%20rates/badge.svg)
 
 # Tangerine rates
