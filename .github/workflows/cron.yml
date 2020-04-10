@@ -28,6 +28,8 @@ jobs:
           ${{ runner.os }}-
     - name: Install dependencies
       run: pip install -r requirements.txt
+    - name: Download rates
+      run: wget -O RatesHistory.xml https://www.tangerine.ca/historicalrates/RatesHistory.xml
     - name: Run main
       run: python main.py
       env:
