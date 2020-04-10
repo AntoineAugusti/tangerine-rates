@@ -1,9 +1,11 @@
+import os
 from collections import OrderedDict
 from decimal import Decimal
 from typing import List, Tuple
 import datetime
 
 from xml.dom import minidom
+import tweepy
 
 
 class Parser(object):
@@ -95,6 +97,24 @@ class Products(dict):
         return res
 
 
+class Twitter(object):
+    def __init__(self):
+        super(Twitter, self).__init__()
+        auth = tweepy.OAuthHandler(
+            os.environ["TWITTER_API_KEY"], os.environ["TWITTER_API_SECRET"]
+        )
+        auth.set_access_token(
+            os.environ["TWITTER_ACCESS_TOKEN"],
+            os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
+        )
+
+        self.api = tweepy.API(auth)
+        self.api.verify_credentials()
+
+    def tweet(self, text):
+        self.api.update_status(text)
+
+
 xml = minidom.parse("RatesHistory.xml")
 products = Parser(xml).parse_products()
 
@@ -102,4 +122,7 @@ today = datetime.date(2020, 4, 2)
 if products.category_has_rate_change_on_day("GIC", today):
     rates = products.category_details_on_day("GIC", today)
     details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
+
     print(f"New rates for GICs!\n\n{details}")
+
+    Twitter().tweet(f"New rates for GICs!\n\n{details}")
