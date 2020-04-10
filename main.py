@@ -42,7 +42,7 @@ class Parser(object):
 
 class Products(dict):
     CATEGORIES = {
-        "GIC": [
+        "GICs": [
             "shorttermgic90days",
             "shorttermgic180days",
             "shorttermgic270days",
@@ -52,7 +52,8 @@ class Products(dict):
             "gic3yr",
             "gic4yr",
             "gic5yr",
-        ]
+        ],
+        "Savings": ["isacad", "isausd", "rspisacad", "tfsaisacad", "rifisacad",],
     }
     CODES = {
         "shorttermgic90days": {"key": ("3504", "90", "CAD"), "name": "90 Day GIC",},
@@ -64,6 +65,11 @@ class Products(dict):
         "gic3yr": {"key": ("3500", "3", "CAD"), "name": "3 Year GIC"},
         "gic4yr": {"key": ("3500", "4", "CAD"), "name": "4 Year GIC"},
         "gic5yr": {"key": ("3500", "5", "CAD"), "name": "5 Year GIC"},
+        "isacad": {"key": ("3000", "", "CAD"), "name": "Savings Account"},
+        "isausd": {"key": ("3010", "", "USD"), "name": "Tax-Free Savings"},
+        "rspisacad": {"key": ("3100", "", "CAD"), "name": "RSP Savings"},
+        "tfsaisacad": {"key": ("3200", "", "CAD"), "name": "US$ Savings"},
+        "rifisacad": {"key": ("3400", "", "CAD"), "name": "RIF Savings"},
     }
 
     def __init__(self, *args):
@@ -119,10 +125,11 @@ xml = minidom.parse("RatesHistory.xml")
 products = Parser(xml).parse_products()
 
 today = datetime.date.today()
-if products.category_has_rate_change_on_day("GIC", today):
-    rates = products.category_details_on_day("GIC", today)
-    details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
+for category in Products.CATEGORIES:
+    if products.category_has_rate_change_on_day(category, today):
+        rates = products.category_details_on_day(category, today)
+        details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
+        message = f"New rates for {category}!\n\n{details}"
 
-    print(f"New rates for GICs!\n\n{details}")
-
-    Twitter().tweet(f"New rates for GICs!\n\n{details}")
+        print(message)
+        Twitter().tweet(message)
