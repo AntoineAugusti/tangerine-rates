@@ -118,7 +118,7 @@ class Twitter(object):
 xml = minidom.parse("RatesHistory.xml")
 products = Parser(xml).parse_products()
 
-today = datetime.date(2020, 4, 2)
+today = datetime.date.today()
 if products.category_has_rate_change_on_day("GIC", today):
     rates = products.category_details_on_day("GIC", today)
     details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
