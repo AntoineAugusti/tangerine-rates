@@ -1,7 +1,6 @@
 name: Post tweet on new rates
 
 on:
-  push:
   schedule:
     - cron: "10 15 * * *"
 
