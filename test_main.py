@@ -2,7 +2,7 @@ from xml.dom import minidom
 import datetime
 from decimal import Decimal
 
-from main import Parser
+from main import Parser, Twitter
 
 import pytest
 
@@ -75,3 +75,8 @@ class TestProducts(object):
             ("4 Year GIC", Decimal("3.10")),
             ("5 Year GIC", Decimal("3.20")),
         ] == products.category_details_on_day("GICs", datetime.date(2020, 4, 1))
+
+
+class TestTwitter(object):
+    def test_can_connect_to_api(self):
+        Twitter()
