@@ -3,6 +3,7 @@ from collections import OrderedDict
 from decimal import Decimal
 from typing import List, Tuple
 import datetime
+import json
 
 from xml.dom import minidom
 import tweepy
@@ -41,46 +42,15 @@ class Parser(object):
 
 
 class Products(dict):
-    CATEGORIES = {
-        "GICs": [
-            "shorttermgic90days",
-            "shorttermgic180days",
-            "shorttermgic270days",
-            "gic1yr",
-            "gic18month",
-            "gic2yr",
-            "gic3yr",
-            "gic4yr",
-            "gic5yr",
-        ],
-        "Savings": ["isacad", "isausd", "rspisacad", "tfsaisacad", "rifisacad"],
-        "Chequings": ["thrive1", "thrive2", "thrive3"],
-    }
-    CODES = {
-        "shorttermgic90days": {"key": ("3504", "90", "CAD"), "name": "90 Day GIC"},
-        "shorttermgic180days": {"key": ("3504", "180", "CAD"), "name": "180 Day GIC"},
-        "shorttermgic270days": {"key": ("3504", "270", "CAD"), "name": "270 Day GIC"},
-        "gic1yr": {"key": ("3500", "1", "CAD"), "name": "1 Year GIC"},
-        "gic18month": {"key": ("3500", "1.5", "CAD"), "name": "1.5 Year GIC"},
-        "gic2yr": {"key": ("3500", "2", "CAD"), "name": "2 Year GIC"},
-        "gic3yr": {"key": ("3500", "3", "CAD"), "name": "3 Year GIC"},
-        "gic4yr": {"key": ("3500", "4", "CAD"), "name": "4 Year GIC"},
-        "gic5yr": {"key": ("3500", "5", "CAD"), "name": "5 Year GIC"},
-        "isacad": {"key": ("3000", "", "CAD"), "name": "Savings Account"},
-        "isausd": {"key": ("3010", "", "USD"), "name": "Tax-Free Savings"},
-        "rspisacad": {"key": ("3100", "", "CAD"), "name": "RSP Savings"},
-        "tfsaisacad": {"key": ("3200", "", "CAD"), "name": "US$ Savings"},
-        "rifisacad": {"key": ("3400", "", "CAD"), "name": "RIF Savings"},
-        "thrive1": {"key": ("4000", "0", "CAD"), "name": "$0-50k Chequing"},
-        "thrive2": {"key": ("4000", "50000", "CAD"), "name": "$50k-100k Chequing"},
-        "thrive3": {"key": ("4000", "100000", "CAD"), "name": "$100k+ Chequing"},
-    }
-
     def __init__(self, *args):
         dict.__init__(self, args)
+        with open("data/codes.json") as f:
+            self.codes = json.load(f)
+        with open("data/categories.json") as f:
+            self.categories = json.load(f)
 
     def for_code(self, code):
-        return self[self.CODES[code]["key"]]
+        return self[tuple(self.codes[code]["key"])]
 
     def rate_on_day(self, code: str, day: datetime.date) -> Decimal:
         product = self.for_code(code)
@@ -95,16 +65,18 @@ class Products(dict):
     def category_has_rate_change_on_day(
         self, category: str, day: datetime.date
     ) -> bool:
-        res = []
-        for code in self.CATEGORIES[category]:
-            res.append(self.has_rate_change_on_day(code, day))
-        return any(res)
+        return any(
+            [
+                self.has_rate_change_on_day(code, day)
+                for code in self.categories[category]
+            ]
+        )
 
     def category_details_on_day(self, category: str, day: datetime.date) -> List[Tuple]:
-        res = []
-        for code in self.CATEGORIES[category]:
-            res.append((self.CODES[code]["name"], self.rate_on_day(code, day)))
-        return res
+        return [
+            (self.codes[code]["name"], self.rate_on_day(code, day))
+            for code in self.categories[category]
+        ]
 
 
 class Twitter(object):
@@ -129,7 +101,7 @@ xml = minidom.parse("RatesHistory.xml")
 products = Parser(xml).parse_products()
 
 today = datetime.date.today()
-for category in Products.CATEGORIES:
+for category in products.categories:
     if products.category_has_rate_change_on_day(category, today):
         rates = products.category_details_on_day(category, today)
         details = "\n".join([f"{name}: {rate}%" for name, rate in rates])

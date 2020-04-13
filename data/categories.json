@@ -1,0 +1,25 @@
+{
+   "GICs":[
+      "shorttermgic90days",
+      "shorttermgic180days",
+      "shorttermgic270days",
+      "gic1yr",
+      "gic18month",
+      "gic2yr",
+      "gic3yr",
+      "gic4yr",
+      "gic5yr"
+   ],
+   "Savings":[
+      "isacad",
+      "isausd",
+      "rspisacad",
+      "tfsaisacad",
+      "rifisacad"
+   ],
+   "Chequings":[
+      "thrive1",
+      "thrive2",
+      "thrive3"
+   ]
+}
