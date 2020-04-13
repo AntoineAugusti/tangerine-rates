@@ -53,14 +53,15 @@ class Products(dict):
             "gic4yr",
             "gic5yr",
         ],
-        "Savings": ["isacad", "isausd", "rspisacad", "tfsaisacad", "rifisacad",],
+        "Savings": ["isacad", "isausd", "rspisacad", "tfsaisacad", "rifisacad"],
+        "Chequings": ["thrive1", "thrive2", "thrive3"],
     }
     CODES = {
-        "shorttermgic90days": {"key": ("3504", "90", "CAD"), "name": "90 Day GIC",},
-        "shorttermgic180days": {"key": ("3504", "180", "CAD"), "name": "180 Day GIC",},
-        "shorttermgic270days": {"key": ("3504", "270", "CAD"), "name": "270 Day GIC",},
+        "shorttermgic90days": {"key": ("3504", "90", "CAD"), "name": "90 Day GIC"},
+        "shorttermgic180days": {"key": ("3504", "180", "CAD"), "name": "180 Day GIC"},
+        "shorttermgic270days": {"key": ("3504", "270", "CAD"), "name": "270 Day GIC"},
         "gic1yr": {"key": ("3500", "1", "CAD"), "name": "1 Year GIC"},
-        "gic18month": {"key": ("3500", "1.5", "CAD"), "name": "1.5 Year GIC",},
+        "gic18month": {"key": ("3500", "1.5", "CAD"), "name": "1.5 Year GIC"},
         "gic2yr": {"key": ("3500", "2", "CAD"), "name": "2 Year GIC"},
         "gic3yr": {"key": ("3500", "3", "CAD"), "name": "3 Year GIC"},
         "gic4yr": {"key": ("3500", "4", "CAD"), "name": "4 Year GIC"},
@@ -70,6 +71,9 @@ class Products(dict):
         "rspisacad": {"key": ("3100", "", "CAD"), "name": "RSP Savings"},
         "tfsaisacad": {"key": ("3200", "", "CAD"), "name": "US$ Savings"},
         "rifisacad": {"key": ("3400", "", "CAD"), "name": "RIF Savings"},
+        "thrive1": {"key": ("4000", "0", "CAD"), "name": "$0-50k Chequing"},
+        "thrive2": {"key": ("4000", "50000", "CAD"), "name": "$50k-100k Chequing"},
+        "thrive3": {"key": ("4000", "100000", "CAD"), "name": "$100k+ Chequing"},
     }
 
     def __init__(self, *args):

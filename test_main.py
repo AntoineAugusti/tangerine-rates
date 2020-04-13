@@ -76,6 +76,12 @@ class TestProducts(object):
             ("5 Year GIC", Decimal("3.20")),
         ] == products.category_details_on_day("GICs", datetime.date(2020, 4, 1))
 
+        assert [
+            ("$0-50k Chequing", Decimal("0.05")),
+            ("$50k-100k Chequing", Decimal("0.10")),
+            ("$100k+ Chequing", Decimal("0.15")),
+        ] == products.category_details_on_day("Chequings", datetime.date(2020, 3, 20))
+
 
 class TestTwitter(object):
     def test_can_connect_to_api(self):
