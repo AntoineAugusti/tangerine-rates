@@ -98,8 +98,7 @@ class Twitter(object):
 
 
 if __name__ == "__main__":
-    xml = minidom.parse("RatesHistory.xml")
-    products = Parser(xml).parse_products()
+    products = Parser(minidom.parse("RatesHistory.xml")).parse_products()
 
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(days=1)
