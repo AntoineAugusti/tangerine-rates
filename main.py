@@ -97,15 +97,16 @@ class Twitter(object):
         self.api.update_status(text)
 
 
-xml = minidom.parse("RatesHistory.xml")
-products = Parser(xml).parse_products()
+if __name__ == "__main__":
+    xml = minidom.parse("RatesHistory.xml")
+    products = Parser(xml).parse_products()
 
-today = datetime.date.today()
-for category in products.categories:
-    if products.category_has_rate_change_on_day(category, today):
-        rates = products.category_details_on_day(category, today)
-        details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
-        message = f"New rates for {category}!\n\n{details}"
+    today = datetime.date.today()
+    for category in products.categories:
+        if products.category_has_rate_change_on_day(category, today):
+            rates = products.category_details_on_day(category, today)
+            details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
+            message = f"New rates for {category}!\n\n{details}"
 
-        print(message)
-        Twitter().tweet(message)
+            print(message)
+            Twitter().tweet(message)
