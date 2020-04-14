@@ -93,8 +93,8 @@ class Twitter(object):
         self.api = tweepy.API(auth)
         self.api.verify_credentials()
 
-    def tweet(self, text):
-        self.api.update_status(text)
+    def tweet(self, text, in_reply_to_status_id=None):
+        return self.api.update_status(text, in_reply_to_status_id=in_reply_to_status_id)
 
 
 if __name__ == "__main__":
@@ -102,11 +102,18 @@ if __name__ == "__main__":
     products = Parser(xml).parse_products()
 
     today = datetime.date.today()
-    for category in products.categories:
-        if products.category_has_rate_change_on_day(category, today):
-            rates = products.category_details_on_day(category, today)
-            details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
-            message = f"New rates for {category}!\n\n{details}"
+    yesterday = today - datetime.timedelta(days=1)
+    for category in [
+        category
+        for category in products.categories
+        if products.category_has_rate_change_on_day(category, today)
+    ]:
+        rates = products.category_details_on_day(category, today)
+        details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
+        message = f"New rates for {category}!\n\n{details}"
+        status = Twitter().tweet(message)
 
-            print(message)
-            Twitter().tweet(message)
+        rates = products.category_details_on_day(category, yesterday)
+        details = "\n".join([f"{name}: {rate}%" for name, rate in rates])
+        message = f"Previous rates:\n\n{details}"
+        Twitter().tweet(message, in_reply_to_status_id=status.id)
