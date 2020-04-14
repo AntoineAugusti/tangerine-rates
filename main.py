@@ -49,7 +49,7 @@ class Products(dict):
         with open("data/categories.json") as f:
             self.categories = json.load(f)
 
-    def for_code(self, code):
+    def for_code(self, code: str) -> dict:
         return self[tuple(self.codes[code]["key"])]
 
     def rate_on_day(self, code: str, day: datetime.date) -> Decimal:
@@ -93,7 +93,7 @@ class Twitter(object):
         self.api = tweepy.API(auth)
         self.api.verify_credentials()
 
-    def tweet(self, text, in_reply_to_status_id=None):
+    def tweet(self, text: str, in_reply_to_status_id: int = None):
         return self.api.update_status(text, in_reply_to_status_id=in_reply_to_status_id)
 
 
